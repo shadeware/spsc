@@ -1,0 +1,227 @@
+language: generic
+sudo: true
+
+env:
+  global:
+   - MAKEFLAGS="-j 2"
+
+matrix:
+  include:
+
+    # 5/ Linux GCC6 Coverage build
+    - os: linux
+      compiler: gcc
+      addons: #todo: move it to bottom and use *gcc6
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-6']
+      env: CXX_COMPILER='g++-6' BUILD_TYPE='Debug' COVERAGE="--coverage"
+
+    # 1/ Linux Clang Builds
+    # - os: linux
+    #   compiler: clang
+    #   addons: &clang35
+    #     apt:
+    #       sources: ['llvm-toolchain-precise-3.5', 'ubuntu-toolchain-r-test']
+    #       packages: ['clang-3.5']
+    #   env: CXX_COMPILER='clang++-3.5' BUILD_TYPE='Release'
+
+    # - os: linux
+    #   compiler: clang
+    #   addons: *clang35
+    #   env: CXX_COMPILER='clang++-3.5' BUILD_TYPE='Debug'
+
+
+    - os: linux
+      compiler: clang
+      addons: &clang36
+        apt:
+          sources: ['llvm-toolchain-precise-3.6', 'ubuntu-toolchain-r-test']
+          packages: ['clang-3.6']
+      env: CXX_COMPILER='clang++-3.6' BUILD_TYPE='Release'
+
+    - os: linux
+      compiler: clang
+      addons: *clang36
+      env: CXX_COMPILER='clang++-3.6' BUILD_TYPE='Debug'
+
+
+    - os: linux
+      compiler: clang
+      addons: &clang37
+        apt:
+          sources: ['llvm-toolchain-precise-3.7', 'ubuntu-toolchain-r-test']
+          packages: ['clang-3.7']
+      env: CXX_COMPILER='clang++-3.7' BUILD_TYPE='Release'
+
+    - os: linux
+      compiler: clang
+      addons: *clang37
+      env: CXX_COMPILER='clang++-3.7' BUILD_TYPE='Debug'
+
+
+    - os: linux
+      compiler: clang
+      addons: &clang38
+        apt:
+          sources: ['llvm-toolchain-precise-3.8', 'ubuntu-toolchain-r-test']
+          packages: ['clang-3.8', 'g++-5']
+      env: CXX_COMPILER='clang++-3.8' BUILD_TYPE='Release'
+
+    - os: linux
+      compiler: clang
+      addons: *clang38
+      env: CXX_COMPILER='clang++-3.8' BUILD_TYPE='Debug'
+
+    # - os: linux
+    #   compiler: clang
+    #   addons: &clang39
+    #     apt:
+    #       sources: ['llvm-toolchain-trusty-3.9']
+    #       packages: ['clang-3.9']
+    #   env: CXX_COMPILER='clang++-3.9' BUILD_TYPE='Release'
+
+    # - os: linux
+    #   compiler: clang
+    #   addons: *clang39
+    #   env: CXX_COMPILER='clang++-3.9' BUILD_TYPE='Debug'
+
+    # - os: linux
+    #   compiler: clang
+    #   addons: &clang40
+    #     apt:
+    #       sources: ['llvm-toolchain-trusty-4.0']
+    #       packages: ['clang-4.0']
+    #   env: CXX_COMPILER='clang++-4.0' BUILD_TYPE='Release'
+
+    # - os: linux
+    #   compiler: clang
+    #   addons: *clang40
+    #   env: CXX_COMPILER='clang++-4.0' BUILD_TYPE='Debug'
+
+    - os: linux
+      compiler: clang
+      addons: &clang50
+        apt:
+          sources: ['llvm-toolchain-precise', 'ubuntu-toolchain-r-test']
+          packages: ['clang-5.0']
+      env: CXX_COMPILER='clang++-5.0' BUILD_TYPE='Release'
+
+    - os: linux
+      compiler: clang
+      addons: *clang50
+      env: CXX_COMPILER='clang++-5.0' BUILD_TYPE='Debug'
+
+
+    # 2/ Linux GCC Builds
+    # - os: linux
+    #   compiler: gcc
+    #   addons: &gcc48
+    #     apt:
+    #       sources: ['ubuntu-toolchain-r-test']
+    #       packages: ['g++-4.8']
+    #   env: CXX_COMPILER='g++-4.8' BUILD_TYPE='Release'
+
+    # - os: linux
+    #   compiler: gcc
+    #   addons: *gcc48
+    #   env: CXX_COMPILER='g++-4.8'BUILD_TYPE='Debug'
+
+
+    - os: linux
+      compiler: gcc
+      addons: &gcc49
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-4.9']
+      env: CXX_COMPILER='g++-4.9' BUILD_TYPE='Release'
+
+    - os: linux
+      compiler: gcc
+      addons: *gcc49
+      env: CXX_COMPILER='g++-4.9' BUILD_TYPE='Debug'
+
+
+    - os: linux
+      compiler: gcc
+      addons: &gcc5
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-5']
+      env: CXX_COMPILER='g++-5' BUILD_TYPE='Release'
+
+    - os: linux
+      compiler: gcc
+      addons: *gcc5
+      env: CXX_COMPILER='g++-5' BUILD_TYPE='Debug'
+
+    - os: linux
+      compiler: gcc
+      addons: &gcc6
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-6']
+      env: CXX_COMPILER='g++-6' BUILD_TYPE='Release'
+
+    - os: linux
+      compiler: gcc
+      addons: *gcc6
+      env: CXX_COMPILER='g++-6' BUILD_TYPE='Debug'
+
+
+    # 3/ OSX Clang Builds
+    - os: osx
+      osx_image: xcode8.3
+      compiler: clang
+      env: CXX_COMPILER='clang++' BUILD_TYPE='Debug'
+
+    - os: osx
+      osx_image: xcode8.3
+      compiler: clang
+      env: CXX_COMPILER='clang++' BUILD_TYPE='Release'
+
+
+before_install:
+    - eval "${MATRIX_EVAL}"
+    # - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+    - |-
+      if [ -n "${COVERAGE}" ]; then
+          export CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} --coverage"
+          pip install --user pyyaml cpp-coveralls
+      fi
+
+install:
+  - gem install coveralls-lcov
+  - wget http://ftp.de.debian.org/debian/pool/main/l/lcov/lcov_1.13.orig.tar.gz
+  - tar xf lcov_1.13.orig.tar.gz
+  - make -C lcov-1.13/
+  - export PATH="${PATH}:$(readlink -f lcov-1.13/bin)"
+
+#addons:
+#  coverity_scan:
+#    project:
+#      name: "shadeware/strswitch"
+#      description: "Build submitted via Travis CI"
+#    notification_email: xdiagonx@gmail.com
+#    build_command_prepend: "cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS='-DNDEBUG=1' ."
+#    build_command:   "cmake --build ."
+#    branch_pattern: (master|coverity_scan)
+
+script:
+  - cd ${TRAVIS_BUILD_DIR}/.. && mkdir build && cd build
+  - cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_CXX_COMPILER=${CXX_COMPILER} -DCMAKE_CXX_FLAGS="-Werror" -DCOVERAGE_FLAGS="${COVERAGE}" ${TRAVIS_BUILD_DIR}
+  - cmake --build .
+  - ctest --output-on-failure
+
+after_success:
+  - |-
+    if [ -n "${COVERAGE}" ]; then
+      cd ${TRAVIS_BUILD_DIR}/../build
+      # rm -rf google* CMakeFiles/CompilerId*
+      lcov -b "${TRAVIS_BUILD_DIR}" -d . -d tests/ --no-external --capture --output-file coverage.info --gcov-tool gcov-6 # capture coverage info
+      lcov --remove coverage.info "${HOME}/build/shadeware/build/googletest-src/googletest/include/gtest/*" --output-file coverage.info --gcov-tool gcov-6 # filter out gtest includes
+      lcov --list coverage.info --gcov-tool gcov-6 #debug info
+      # Uploading report to CodeCov
+      # bash <(curl -s https://codecov.io/bash) coverage.info || echo "Codecov did not collect coverage reports"
+      coveralls-lcov -v coverage.info
+    fi
