@@ -15,7 +15,7 @@
 
 
 #if defined(__GNUC__) || defined(__GNUG__) // clang too
-#  define SPSC_FORCEINLINE __attribute__((forceinline))
+#  define SPSC_FORCEINLINE __attribute__((always_inline))
 #elif defined(_MSC_VER)
 #  define SPSC_FORCEINLINE __forceinline
 #else
